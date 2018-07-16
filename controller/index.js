@@ -1,7 +1,7 @@
 let express = require("express"),
     router = express.Router();
 
-router.post('/login', (res, req) => {
+router.post('/account/login/', (res, req) => {
     let data = {
         login: login,
         password: pass,
