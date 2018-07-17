@@ -1,19 +1,14 @@
 let express = require("express"),
     app = express(),
-    body_parser = require("body-parser");
+    bodyParser = require("body-parser");
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, application/x-www-form-urlencoded, charset=UTF-8');
-    next();
-});
-
-app.use(body_parser.json());
-app.use(body_parser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(__dirname));
+app.use(express.static(__dirname + '/public'));
 
 //route
-app.use(require(__dirname + "/controller/index"));
+app.use('/', require('./controller/index'));
 
 app.use(function(req, res, next) {
     res.status(404);
