@@ -3,6 +3,7 @@ let express = require("express"),
 
 var querystring = require('querystring');
 var http = require('http');
+var request = require('request');
 
 router.post('/login', (req, res) => {
     console.log(req.body);
@@ -10,42 +11,41 @@ router.post('/login', (req, res) => {
     let data = querystring.stringify({
         login: req.body.username,
         password: req.body.password,
-        stor_login: 1
+        store_login: 1
     });
 
-    const options = {
-        hostname: 'www.weblancer.net',
-        path: '/account/login/',
-        method: 'POST',
+    var options = {
+        method: 'post',
+        body: data,
+        json: true,
+        url: 'https://www.weblancer.net/account/login/',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded, charset=UTF-8',
             'Content-Length': Buffer.byteLength(data)
         }
-    };
+    }
 
-    const _req = http.request(options, (_res) => {
+    request(options, function(err, res, body) {
+        if (err) {
+            console.log('Error :', err)
+            return
+        }
+        let b = res.headers;
+        // let cookie = b[set - cookie];
+        console.log(`STATUS: ${res.statusCode}`);
         console.log("------------------------------------");
-        console.log(`STATUS: ${_res.statusCode}`);
+        console.log(`HEADERS A: ${JSON.stringify(res.headers)}`);
         console.log("------------------------------------");
-        console.log(`HEADERS: ${JSON.stringify(_res.headers)}`);
+        for (const key in b) {
+            console.log("BBBBBBBBBBBBBBBBB", b[key]);
+            console.log("KKKKKKKKKKKKKKKKK", key);
+        }
         console.log("------------------------------------");
-        _res.setEncoding('utf8');
-        _res.on('data', (chunk) => {
-            console.log(`BODY: ${chunk}`);
-            console.log("------------------------------------");
-        });
-        _res.on('end', () => {
-            console.log('No more data in response.');
-            console.log("------------------------------------");
-        });
+        // console.log(cookie);
+        console.log("------------------------------------");
+        console.log(' Body :', body)
+
     });
-
-    _req.on('error', (err) => {
-        console.error(`problem with request: ${err.message}`);
-    });
-
-    _req.write(data);
-    _req.end();
 });
 
 module.exports = router;
