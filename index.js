@@ -1,10 +1,17 @@
 let express = require("express"),
     app = express(),
-    bodyParser = require("body-parser");
+    bodyParser = require("body-parser"),
+    mongoose = require('mongoose');
+
+mongoose.connect('mongodb://darkmars:weblanser228@ds219100.mlab.com:19100/cookies', { useNewUrlParser: true }, function(err) {
+    if (err) throw new Error("Connection error: ", err.message);
+    app.listen(2521, () => {
+        console.log("Server started on 2521 port");
+    });
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(__dirname));
 app.use(express.static(__dirname + '/public'));
 
 //route
@@ -21,8 +28,4 @@ app.use(function(err, req, res, next) {
     console.log(`Internal error(${res.statusCode}): ${err.message}`);
     res.send({ error: err.message });
     return;
-});
-
-app.listen(2521, () => {
-    console.log("Server started on 2521 port");
 });

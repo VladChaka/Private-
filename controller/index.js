@@ -1,51 +1,33 @@
 let express = require("express"),
-    router = express.Router();
-
-var querystring = require('querystring');
-var http = require('http');
-var request = require('request');
+    router = express.Router(),
+    Service = require('../servise/index'),
+    service = new Service(),
+    jwt = require('jsonwebtoken'),
+    token__module = require("../token/index"),
+    path = require('path');
 
 router.post('/login', (req, res) => {
-    console.log(req.body);
+    const data = {
+        token: jwt.sign({ username: req.username }, 'darkmarweblanser228', { expiresIn: '1 h' }),
+        username: req.body.username,
+        password: req.body.password
+    };
+    service.auth(data,
+        function(success, status) {
+            res.status(status).json(success);
+        },
+        function(err, status) {
+            res.status(status).json(err);
+        });
+});
 
-    let data = querystring.stringify({
-        login: req.body.username,
-        password: req.body.password,
-        store_login: 1
-    });
-
-    var options = {
-        method: 'post',
-        body: data,
-        json: true,
-        url: 'https://www.weblancer.net/account/login/',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded, charset=UTF-8',
-            'Content-Length': Buffer.byteLength(data)
-        }
-    }
-
-    request(options, function(err, res, body) {
-        if (err) {
-            console.log('Error :', err)
-            return
-        }
-        let b = res.headers;
-        // let cookie = b[set - cookie];
-        console.log(`STATUS: ${res.statusCode}`);
-        console.log("------------------------------------");
-        console.log(`HEADERS A: ${JSON.stringify(res.headers)}`);
-        console.log("------------------------------------");
-        for (const key in b) {
-            console.log("BBBBBBBBBBBBBBBBB", b[key]);
-            console.log("KKKKKKKKKKKKKKKKK", key);
-        }
-        console.log("------------------------------------");
-        // console.log(cookie);
-        console.log("------------------------------------");
-        console.log(' Body :', body)
-
-    });
+router.post('/message', token__module.isValid, (req, res) => {
+    service.getMessage(req.body, function(success) {
+            res.status(200).json(success);
+        },
+        function(err, status) {
+            res.status(status).json(err);
+        });
 });
 
 module.exports = router;
