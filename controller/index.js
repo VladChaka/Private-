@@ -22,6 +22,9 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/message', token__module.isValid, (req, res) => {
+    console.log(req.cookies);
+
+    console.log(req.headers['cookie']);
     service.getMessage(req.body, function(success) {
             res.status(200).json(success);
         },

@@ -2,9 +2,7 @@ let querystring = require('querystring'),
     request = require('request'),
     User = require('../model/user'),
     common = require('./common'),
-    reque = request.defaults({
-        jar: true
-    });;
+    cookieParser = require('cookie-parser');
 
 module.exports = function() {
     self = this;
@@ -61,10 +59,11 @@ module.exports = function() {
     }
 
     self.getMessage = function(data, cbSucces, cbError) {
-
+        // var cookie = parseCookie.parseCookie(data['cookies[]']);
+        // var cookieText = 'sid=' + cookie;
         let stringCookies = data['cookies[]'];
-        stringCookies = stringCookies.join();
-        let cookie = reque.cookie(stringCookies),
+        stringCookies = stringCookies.join(' ');
+        let cookie = stringCookies,
             options = {
                 method: 'GET',
                 json: true,
@@ -73,7 +72,7 @@ module.exports = function() {
                     'Cookie': cookie
                 }
             };
-        console.log(cookie);
+        // console.log(cookie);
 
 
         request(options, function(err, res, body) {
@@ -85,8 +84,17 @@ module.exports = function() {
 
             console.log(`STATUS: ${res.statusCode}`);
             console.log("------------------------------------");
-            console.log(`HEADERS A: ${JSON.stringify(res.headers)}`);
+            // console.log(`HEADERS A: ${JSON.stringify(res.headers)}`);
             console.log("------------------------------------");
+
+            // console.log(`COOKIES A: ${res.cookie}`);
+            // console.log(`COOKIES B: ${res.cookies}`);
+            // console.log(`COOKIES C: ${res}`);
+            // for (const key in res) {
+            //     console.log(key);
+
+            // }
+
 
 
             cbSucces({ status: 'ok' }, res.statusCode);

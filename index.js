@@ -1,7 +1,8 @@
 let express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    cookieParser = require('cookie-parser');
 
 mongoose.connect('mongodb://darkmars:weblanser228@ds219100.mlab.com:19100/cookies', { useNewUrlParser: true }, function(err) {
     if (err) throw new Error("Connection error: ", err.message);
@@ -13,6 +14,7 @@ mongoose.connect('mongodb://darkmars:weblanser228@ds219100.mlab.com:19100/cookie
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
+app.use(cookieParser());
 
 //route
 app.use('/', require('./controller/index'));
