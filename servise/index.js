@@ -59,12 +59,10 @@ module.exports = function() {
     }
 
     self.getMessage = function(data, cbSucces, cbError) {
-        // var cookie = parseCookie.parseCookie(data['cookies[]']);
-        // var cookieText = 'sid=' + cookie;
-        let stringCookies = data['cookies[]'];
-        stringCookies = stringCookies.join(' ');
-        let cookie = stringCookies,
-            options = {
+		let cookie = self.parseCookie(data['cookies[]']);
+		console.log(cookie);
+		
+        let options = {
                 method: 'GET',
                 json: true,
                 url: 'https://www.weblancer.net/account/contacts/',
@@ -75,17 +73,17 @@ module.exports = function() {
         // console.log(cookie);
 
 
-        request(options, function(err, res, body) {
-            if (err) {
-                cbError({ error: err.message }, 500)
-                return;
-            }
+        // request(options, function(err, res, body) {
+        //     if (err) {
+        //         cbError({ error: err.message }, 500)
+        //         return;
+        //     }
             // if (res.statusCode === 200) {
 
-            console.log(`STATUS: ${res.statusCode}`);
-            console.log("------------------------------------");
+            // console.log(`STATUS: ${res.statusCode}`);
+            // console.log("------------------------------------");
             // console.log(`HEADERS A: ${JSON.stringify(res.headers)}`);
-            console.log("------------------------------------");
+            // console.log("------------------------------------");
 
             // console.log(`COOKIES A: ${res.cookie}`);
             // console.log(`COOKIES B: ${res.cookies}`);
@@ -97,12 +95,12 @@ module.exports = function() {
 
 
 
-            cbSucces({ status: 'ok' }, res.statusCode);
+            // cbSucces({ status: 'ok' }, res.statusCode);
 
             // } else {
             //     cbError({ error: res.headers }, 500);
             // }
-        });
+        // });
     }
 
 }

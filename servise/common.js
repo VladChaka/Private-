@@ -23,7 +23,17 @@ module.exports = function() {
         } else {
             cbSuccess(user);
         }
-    };
+	};
+	
+	self.parseCookie = function(cookies) {
+		let cookie;
+		for (let i = 0; i < cookies.length; i++) {
+			console.log(cookies[i]);			
+		}
+
+
+        return user;
+    }
 
     self.rebuildUserData = function(userData) {
         let user = {
