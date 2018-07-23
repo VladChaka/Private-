@@ -33,8 +33,7 @@ module.exports = function() {
 				tpl = getCookie(cookie);
 			}			
 		}
-		console.log(tpl);
-		
+				
         return tpl;
     };
 
