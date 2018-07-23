@@ -13,7 +13,7 @@ module.exports = function() {
     self.getCookies = function(cookies) {
 		// let tpl = 'SESSION_ID=%SESSION_ID%; cache_time=%cache_time%; stored_login=%stored_login%; stored_password=%stored_password%; stored_time=%stored_time%; login=%login%; hash=%hash%; stored_files_login=%stored_files_login%; stored_files_password=%stored_files_password%; stored_files_time=%stored_files_time%';
 
-		let tpl = 'SESSION_ID=%SESSION_ID%; login=%login%; hash=gynp3k9BJzccmc1x%2BCyusi7GmymNzix39Y%2FAW%2BuStxM%3D; cache_time=%cache_time%; stored_login=%stored_login%; stored_password=%stored_password%; stored_time=%stored_time%; stored_files_login=%stored_files_login%; stored_files_password=%stored_files_password%; stored_files_time=%stored_files_time%'
+		let tpl = 'SESSION_ID=%SESSION_ID%; login=%login%; hash=%hash%; cache_time=%cache_time%; stored_login=%stored_login%; stored_password=%stored_password%; stored_time=%stored_time%; stored_files_login=%stored_files_login%; stored_files_password=%stored_files_password%; stored_files_time=%stored_files_time%'
         
         var getCookie = function(cookie) {
             var cookieArray = cookie.split('=');
@@ -22,11 +22,19 @@ module.exports = function() {
             return tpl.replace(`%${name}%`, value);
         };
 
-        cookies.map((cookie) => {
-			cookie = cookie.split(';')[0];
-            tpl = getCookie(cookie);
-        });
-
+        // cookies.map((cookie) => {
+		// 	cookie = cookie.split(';')[0];
+        //     tpl = getCookie(cookie);
+		// });
+		
+		for (let i = 0; i < cookies.length; i++) {
+			if (i !== 1) {
+				cookie = cookies[i].split(';')[0];
+				tpl = getCookie(cookie);
+			}			
+		}
+		console.log(tpl);
+		
         return tpl;
     };
 

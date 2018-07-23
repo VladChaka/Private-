@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <form>
+        <button type="button" id="first">Отправить</button>
+    </form>
+	<form method="POST" action="/api/dialogs.get">
+		<input type="text" name="username" value="VladChaka">
+        <input type="password" name="password" value="alotep2890">
+        <input type="text" name="token" id="token">
+        <button type="submit" id="second">Получить</button>
+    </form>
+    <script src="js.js"></script>
+</body>
+
+</html>
