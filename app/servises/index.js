@@ -8,34 +8,7 @@ let querystring = require('querystring'),
 module.exports = function() {	
     self = this;	
     common.apply(self);	
-    htmlParser.apply(self);	
-	
-    self.getCookies = function(cookies) {	
-		// let tpl = 'SESSION_ID=%SESSION_ID%; cache_time=%cache_time%; stored_login=%stored_login%; stored_password=%stored_password%; stored_time=%stored_time%; login=%login%; hash=%hash%; stored_files_login=%stored_files_login%; stored_files_password=%stored_files_password%; stored_files_time=%stored_files_time%';	
-	
-		let tpl = 'SESSION_ID=%SESSION_ID%; login=%login%; hash=%hash%; cache_time=%cache_time%; stored_login=%stored_login%; tored_password=%stored_password%; stored_time=%stored_time%; stored_files_login=%stored_files_login%; tored_files_password=%stored_files_password%; stored_files_time=%stored_files_time%'	
-        	
-        var getCookie = function(cookie) {	
-            var cookieArray = cookie.split('=');	
-            let name = cookieArray[0].trim();	
-            let value = cookieArray[1].trim();	
-            return tpl.replace(`%${name}%`, value);	
-        };	
-	
-        // cookies.map((cookie) => {	
-		// 	cookie = cookie.split(';')[0];	
-        //     tpl = getCookie(cookie);	
-		// });	
-			
-		for (let i = 0; i < cookies.length; i++) {	
-			if (i !== 1) {	
-				cookie = cookies[i].split(';')[0];	
-				tpl = getCookie(cookie);	
-			}				
-		}	
-					
-        return tpl;	
-    };	
+    htmlParser.apply(self);		
 	
     self.auth = function(data, cbSuccess, cbError) {	
         let dataJson = querystring.stringify({	
@@ -69,7 +42,7 @@ module.exports = function() {
                     token: data.token,	
                     authDate: Date.now()	
                 });	
-	
+                
                 self.hashPassword(user, function(user) {	
                     user.save(function(err, user) {	
                         if (err) {	
@@ -108,26 +81,23 @@ module.exports = function() {
             //             'Referer': 'https://www.weblancer.net/',	
             //             'Cookie': cookies	
             //         }	
-			//     };	
+            //     };
 				
             let cookies = user[0].cookies,	
                 options = {	
                     method: 'GET',	
-                    // json: true,	
+                    json: true,
                     url: 'https://www.weblancer.net/account/contacts/',	
                     headers: {	
 						'Upgrade-Insecure-Requests': '1',	
 						'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',	
-						// 'Accept-Encoding': 'gzip, deflate, br',	
-						'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',	
-                        // 'DNT': '1',	
-						'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',	
-                        // 'Sec-Metadata': 'cause="user-activated", destination="document", target="top-level", site="same-origin"',	
+						'Accept-Encoding': 'gzip, deflate, br',
+						'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+						'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
                         'Referer': 'https://www.weblancer.net/',	
                         'Cookie': cookies	
                     }	
-				};	
-					
+                };
 	
             request(options, function(err, res, body) {	
                 if (err) {	
@@ -136,7 +106,7 @@ module.exports = function() {
                 }	
                 if (res.statusCode === 200) {	
                     let title = self.parse(body);	
-                    cbSuccess({ title: title }, res.statusCode);	
+                    cbSuccess(body, res.statusCode);	
                 } else {	
                     cbError({ error: res.headers }, 500);	
                 }	

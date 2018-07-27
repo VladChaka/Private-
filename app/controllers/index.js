@@ -18,9 +18,7 @@ router.post('/login', (req, res) => {
     };
     service.auth(data,
         function(success, status) {
-			res.status(status).json(success);
-			console.log("1");
-			
+			res.status(status).json(success);			
         },
         function(err, status) {
             res.status(status).json(err);
