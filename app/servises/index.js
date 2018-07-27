@@ -91,7 +91,7 @@ module.exports = function() {
                     headers: {	
 						'Upgrade-Insecure-Requests': '1',	
 						'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',	
-						'Accept-Encoding': 'gzip, deflate, br',
+						// 'Accept-Encoding': 'gzip, deflate, br',
 						'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
 						'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
                         'Referer': 'https://www.weblancer.net/',	
@@ -106,7 +106,8 @@ module.exports = function() {
                 }	
                 if (res.statusCode === 200) {	
                     let title = self.parse(body);	
-                    cbSuccess(body, res.statusCode);	
+                    cbSuccess(body, res.statusCode);
+                    // cbSuccess({ title: title }, res.statusCode);
                 } else {	
                     cbError({ error: res.headers }, 500);	
                 }	
